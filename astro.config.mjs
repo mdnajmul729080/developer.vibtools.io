@@ -12,8 +12,14 @@ const siteConfig = JSON.parse(readFileSync(siteConfigPath, "utf8"));
 
 function cleanSegment(segment) {
   const withoutExt = segment.replace(/\.mdx?$/i, "");
-  const stripped = withoutExt.replace(/^\d+[-_]/, "");
-  return (stripped || withoutExt).toLowerCase();
+  const stripped = withoutExt.replace(/^\d+[-_.\s]+/, "");
+  const normalized = stripped
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return normalized || withoutExt.toLowerCase();
 }
 
 function externalMarkdownLinks() {
@@ -63,31 +69,46 @@ function rewriteInternalMarkdownLinks() {
 
           if (/\.mdx?$/i.test(pathPart)) {
             if (docRelativePath) {
-              const currentDir = path.posix.dirname(docRelativePath);
-              const resolvedDocPath = pathPart.startsWith("/")
-                ? path.posix.normalize(pathPart.replace(/^\/+/, ""))
-                : path.posix.normalize(path.posix.join(currentDir, pathPart));
+              const docSegments = docRelativePath.split("/").filter(Boolean);
+              const productSlug = docSegments[0] ?? "";
+              const innerDocPath = docSegments.slice(1).join("/");
+              const innerDir = innerDocPath
+                ? path.posix.dirname(innerDocPath)
+                : ".";
 
-              if (!resolvedDocPath.startsWith("..")) {
-                const segments = resolvedDocPath.split("/").filter(Boolean);
-                if (segments.length > 0) {
-                  const productSlug = segments[0];
-                  const innerSegments = segments.slice(1);
-                  const lastSegment =
-                    innerSegments[innerSegments.length - 1] ?? "";
-                  const isIndexOrReadme = /^(?:index|readme)\.mdx?$/i.test(
-                    lastSegment,
-                  );
-                  const routeSegments = (
-                    isIndexOrReadme
-                      ? innerSegments.slice(0, -1)
-                      : innerSegments
-                  )
-                    .map(cleanSegment)
-                    .filter(Boolean);
-
-                  node.url = `/${[productSlug, ...routeSegments].join("/")}/${suffix}`;
+              if (productSlug) {
+                const rawJoined = pathPart.startsWith("/")
+                  ? pathPart.replace(/^\/+/, "")
+                  : path.posix.join(innerDir, pathPart);
+                const clampedSegments = [];
+                for (const seg of rawJoined.split("/")) {
+                  if (!seg || seg === ".") continue;
+                  if (seg === "..") {
+                    clampedSegments.pop();
+                  } else {
+                    clampedSegments.push(seg);
+                  }
                 }
+                if (
+                  pathPart.startsWith("/") &&
+                  clampedSegments[0] === productSlug
+                ) {
+                  clampedSegments.shift();
+                }
+                const lastSegment =
+                  clampedSegments[clampedSegments.length - 1] ?? "";
+                const isIndexOrReadme = /^(?:index|readme)\.mdx?$/i.test(
+                  lastSegment,
+                );
+                const routeSegments = (
+                  isIndexOrReadme
+                    ? clampedSegments.slice(0, -1)
+                    : clampedSegments
+                )
+                  .map(cleanSegment)
+                  .filter(Boolean);
+
+                node.url = `/${[productSlug, ...routeSegments].join("/")}/${suffix}`;
               }
             } else {
               const normalized = path.posix.normalize(pathPart);

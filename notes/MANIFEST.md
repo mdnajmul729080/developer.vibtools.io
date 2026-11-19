@@ -36,5 +36,7 @@
 | `030-onboard-calgrid-vibdocs.md`               | Audit & onboarding log for `https://github.com/vibdocs/CalGrid` on `docs.vib.tools`          | Plan      |
 | `031-github-ready-markdown-and-seo-docs.md`    | Plan & verification log for GitHub-ready SEO `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `SUPPORT.md` | Plan      |
 | `032-developer-only-portal-conversion.md`      | Plan & verification log for converting the repository and `.vibtools/` sync rules to a developer-only portal (`https://developer.vibtools.io`) | Plan      |
+| `033-vibtoolshq-org-audit-and-developer-onboarding.md` | Forensic audit of all `github.com/vibtoolshq` public repos and onboarding of `.vibtools/`-enabled developer projects | Plan      |
+
 
 

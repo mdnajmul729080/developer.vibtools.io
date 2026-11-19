@@ -1,3 +1,8 @@
 [
-  "https://github.com/vibtoolshq/vib-docs-engine.git"
+  "https://github.com/vibtoolshq/docscaffold.git",
+  "https://github.com/vibtoolshq/SocketCore.git",
+  "https://github.com/vibtoolshq/VPS-MCP.git",
+  "https://github.com/vibtoolshq/KronOTP.git",
+  "https://github.com/vibtoolshq/UpdatePilot.git"
 ]
+

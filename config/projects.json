@@ -1,16 +1,8 @@
 [
-  {
-    "slug": "vib-docs-engine",
-    "category": "Core Engine",
-    "accentColor": "#2563EB",
-    "repoUrl": "https://github.com/vibtoolshq/vib-docs-engine.git",
-    "branch": "main",
-    "docsPath": "docs",
-    "docsType": "developer",
-    "ctaLabel": "View repository",
-    "ctaUrl": "https://github.com/vibtoolshq/vib-docs-engine",
-    "title": "Vib Docs Engine",
-    "description": "A static multi-product documentation engine.",
-    "version": "1.0.0"
-  }
+  "https://github.com/vibtoolshq/docscaffold.git",
+  "https://github.com/vibtoolshq/SocketCore.git",
+  "https://github.com/vibtoolshq/VPS-MCP.git",
+  "https://github.com/vibtoolshq/KronOTP.git",
+  "https://github.com/vibtoolshq/UpdatePilot.git"
 ]
+
