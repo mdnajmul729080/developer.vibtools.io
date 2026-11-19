@@ -26,7 +26,7 @@ Options (for quick .vibtools/ or override registration):
   --branch <branch>         Optional branch override
   --accent <hex>            Optional hex accent color override
   --docs-path <path>        Optional relative docs path override
-  --docs-type <type>        Optional portal filter (users | developer | both)
+  --docs-type <type>        Optional portal filter (developer | dev)
   --secret-key <value>      Optional private repo token or $ENV_VAR name
   --git-username <user>     Optional Git token username
   --cta-label <label>       Optional CTA label (requires --cta-url)
@@ -469,12 +469,12 @@ async function runInteractiveManualMode(
   );
   const docsTypeInput = await askUntil(
     prompts,
-    "Portal type (users | developer | both)",
+    "Docs type (developer | dev)",
     (value) =>
-      vibtoolsHelpers.DOCS_TYPES.includes(value)
+      vibtoolsHelpers.normalizeDocsType(value) === "developer"
         ? ""
-        : `Choose one of: ${vibtoolsHelpers.DOCS_TYPES.join(", ")}.`,
-    "both",
+        : "Use 'developer' or 'dev' for the developer portal.",
+    "developer",
   );
   const project = {
     slug,
@@ -486,7 +486,7 @@ async function runInteractiveManualMode(
       .replace(/^[\\/]+|[\\/]+$/g, "")
       .split(/[\\/]+/)
       .join("/"),
-    ...(docsTypeInput !== "both" ? { docsType: docsTypeInput } : {}),
+    docsType: "developer",
   };
 
   if (vibtoolsHelpers.isSupportedGitRemote(repositoryInput)) {

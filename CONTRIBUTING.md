@@ -88,15 +88,14 @@ What `npm run verify` checks automatically:
 
 ---
 
-## 5. Adding or Testing a Product Repository
+## 5. Adding or Testing a Developer Repository
 
-- To register a `.vibtools/`-enabled repository:
+- To register a `.vibtools/`-enabled developer repository (`"docsType": "developer"` or `"dev"`):
   ```sh
-  npm run add-project -- --url https://github.com/vibdocs/CalGrid.git
+  npm run add-project -- --url https://github.com/vibtoolshq/SocketCore.git
   ```
-- To test dual-portal exports locally:
+- To test standalone developer portal export locally:
   ```sh
-  npm run export-portal -- --portal user --out /tmp/test-user-portal
   npm run export-portal -- --portal dev --out /tmp/test-dev-portal
   ```
 

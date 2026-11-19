@@ -2,7 +2,17 @@ export const PORTAL_TYPES = ["users", "developer", "all"] as const;
 export type PortalType = (typeof PORTAL_TYPES)[number];
 
 export const DOCS_TYPES = ["users", "developer", "both"] as const;
+export const ACCEPTED_DOCS_TYPE_INPUTS = ["developer", "dev", "users", "user", "both"] as const;
 export type DocsType = (typeof DOCS_TYPES)[number];
+
+export function normalizeDocsType(raw: unknown): DocsType | null {
+  if (typeof raw !== "string") return null;
+  const normalized = raw.trim().toLowerCase();
+  if (normalized === "developer" || normalized === "dev") return "developer";
+  if (normalized === "users" || normalized === "user") return "users";
+  if (normalized === "both") return "both";
+  return null;
+}
 
 export const VIBTOOLS_DIR = ".vibtools";
 export const VIBTOOLS_CONFIG_FILENAMES = ["docs.config.json", "config.docs.json"] as const;
@@ -264,16 +274,14 @@ export function parseVibtoolsRepoConfig(
   }
 
   if (raw.docsType !== undefined) {
-    if (
-      typeof raw.docsType !== "string" ||
-      !(DOCS_TYPES as readonly string[]).includes(raw.docsType)
-    ) {
+    const normalizedDocsType = normalizeDocsType(raw.docsType);
+    if (!normalizedDocsType) {
       return {
         success: false,
-        error: `docsType must be one of: ${DOCS_TYPES.join(", ")}`,
+        error: `docsType must be one of: ${ACCEPTED_DOCS_TYPE_INPUTS.join(", ")}`,
       };
     }
-    result.docsType = raw.docsType as DocsType;
+    result.docsType = normalizedDocsType;
   }
 
   if (raw.targets !== undefined) {
@@ -285,24 +293,43 @@ export function parseVibtoolsRepoConfig(
       return { success: false, error: "targets must define at least one of users or developer" };
     }
     for (const key of targetKeys) {
-      if (key !== "users" && key !== "developer") {
-        return { success: false, error: `Unknown target "${key}" in targets (expected users or developer)` };
+      if (key !== "users" && key !== "user" && key !== "developer" && key !== "dev") {
+        return {
+          success: false,
+          error: `Unknown target "${key}" in targets (expected developer, dev, users, or user)`,
+        };
       }
     }
+    if (raw.targets.developer !== undefined && raw.targets.dev !== undefined) {
+      return {
+        success: false,
+        error: "targets cannot define both 'developer' and 'dev' simultaneously",
+      };
+    }
+    if (raw.targets.users !== undefined && raw.targets.user !== undefined) {
+      return {
+        success: false,
+        error: "targets cannot define both 'users' and 'user' simultaneously",
+      };
+    }
     result.targets = {};
-    if (raw.targets.users !== undefined) {
-      if (!isPlainObject(raw.targets.users)) {
-        return { success: false, error: "targets.users must be an object" };
+    const rawUsersTarget = raw.targets.users ?? raw.targets.user;
+    const usersTargetLabel = raw.targets.users !== undefined ? "targets.users." : "targets.user.";
+    if (rawUsersTarget !== undefined) {
+      if (!isPlainObject(rawUsersTarget)) {
+        return { success: false, error: `${usersTargetLabel.slice(0, -1)} must be an object` };
       }
-      const usersTarget = parseTargetFields(raw.targets.users, "targets.users.");
+      const usersTarget = parseTargetFields(rawUsersTarget, usersTargetLabel);
       if (!usersTarget.ok) return { success: false, error: usersTarget.error };
       result.targets.users = usersTarget.data;
     }
-    if (raw.targets.developer !== undefined) {
-      if (!isPlainObject(raw.targets.developer)) {
-        return { success: false, error: "targets.developer must be an object" };
+    const rawDevTarget = raw.targets.developer ?? raw.targets.dev;
+    const devTargetLabel = raw.targets.developer !== undefined ? "targets.developer." : "targets.dev.";
+    if (rawDevTarget !== undefined) {
+      if (!isPlainObject(rawDevTarget)) {
+        return { success: false, error: `${devTargetLabel.slice(0, -1)} must be an object` };
       }
-      const devTarget = parseTargetFields(raw.targets.developer, "targets.developer.");
+      const devTarget = parseTargetFields(rawDevTarget, devTargetLabel);
       if (!devTarget.ok) return { success: false, error: devTarget.error };
       result.targets.developer = devTarget.data;
     }
@@ -359,16 +386,14 @@ export function normalizeRegistryEntry(
   }
 
   if (rawEntry.docsType !== undefined) {
-    if (
-      typeof rawEntry.docsType !== "string" ||
-      !(DOCS_TYPES as readonly string[]).includes(rawEntry.docsType)
-    ) {
+    const normalizedDocsType = normalizeDocsType(rawEntry.docsType);
+    if (!normalizedDocsType) {
       return {
         success: false,
-        error: `docsType must be one of: ${DOCS_TYPES.join(", ")}`,
+        error: `docsType must be one of: ${ACCEPTED_DOCS_TYPE_INPUTS.join(", ")}`,
       };
     }
-    entry.docsType = rawEntry.docsType as DocsType;
+    entry.docsType = normalizedDocsType;
   }
 
   return { success: true, data: entry };
@@ -403,12 +428,21 @@ function selectActiveTarget(
   registryDocsType?: DocsType,
 ): { matched: true; targetConfig?: VibtoolsTargetConfig; effectiveDocsType: DocsType } | { matched: false; reason: string } {
   if (!remoteConfig) {
+    if (portalType === "developer") {
+      if (registryDocsType === "developer") {
+        return { matched: true, effectiveDocsType: "developer" };
+      }
+      return {
+        matched: false,
+        reason:
+          registryDocsType === "users"
+            ? "users-only entry skipped on developer portal"
+            : "repository .vibtools config with docsType 'developer' (or 'dev') is required on developer portal",
+      };
+    }
     const fallbackType = registryDocsType ?? "both";
     if (portalType === "users" && fallbackType === "developer") {
       return { matched: false, reason: "developer-only entry skipped on users portal" };
-    }
-    if (portalType === "developer" && fallbackType === "users") {
-      return { matched: false, reason: "users-only entry skipped on developer portal" };
     }
     return { matched: true, effectiveDocsType: fallbackType };
   }
@@ -418,7 +452,7 @@ function selectActiveTarget(
 
   if (targets) {
     if (portalType === "users") {
-      if (targets.users) {
+      if (targets.users && declaredDocsType !== "developer") {
         return { matched: true, targetConfig: targets.users, effectiveDocsType: "users" };
       }
       if (declaredDocsType === "users" || declaredDocsType === "both") {
@@ -428,11 +462,11 @@ function selectActiveTarget(
     }
 
     if (portalType === "developer") {
-      if (targets.developer) {
+      if (targets.developer && declaredDocsType !== "users") {
         return { matched: true, targetConfig: targets.developer, effectiveDocsType: "developer" };
       }
-      if (declaredDocsType === "developer" || declaredDocsType === "both") {
-        return { matched: true, effectiveDocsType: declaredDocsType };
+      if (declaredDocsType === "developer") {
+        return { matched: true, effectiveDocsType: "developer" };
       }
       return { matched: false, reason: "repository .vibtools targets only users portal" };
     }
@@ -451,17 +485,28 @@ function selectActiveTarget(
     }
     return {
       matched: true,
-      targetConfig: targets.users ?? targets.developer,
+      targetConfig: targets.developer ?? targets.users,
       effectiveDocsType: declaredDocsType ?? "both",
+    };
+  }
+
+  if (portalType === "developer") {
+    const devDocsType = declaredDocsType ?? registryDocsType;
+    if (devDocsType === "developer" || devDocsType === "both") {
+      return { matched: true, effectiveDocsType: devDocsType };
+    }
+    return {
+      matched: false,
+      reason:
+        devDocsType === "users"
+          ? "repository .vibtools docsType is users-only"
+          : "repository .vibtools docsType must be 'developer' (or 'dev') for the developer portal",
     };
   }
 
   const effectiveDocsType = declaredDocsType ?? registryDocsType ?? "both";
   if (portalType === "users" && effectiveDocsType === "developer") {
     return { matched: false, reason: "repository .vibtools docsType is developer-only" };
-  }
-  if (portalType === "developer" && effectiveDocsType === "users") {
-    return { matched: false, reason: "repository .vibtools docsType is users-only" };
   }
 
   return { matched: true, effectiveDocsType };
@@ -629,7 +674,7 @@ export function extractMarkdownMetadata(markdownSource: string): ExtractedMarkdo
 }
 
 export function buildVibtoolsJsonSchema(
-  schemaId = "https://docs.vib.tools/schemas/vibtools-docs.schema.json",
+  schemaId = "https://developer.vibtools.io/schemas/vibtools-docs.schema.json",
 ): Record<string, unknown> {
   const targetProperties = {
     slug: {
@@ -648,7 +693,7 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       minLength: 1,
       description:
-        "Hub filter category label (e.g. 'Desktop Apps', 'Core Engine', 'SDKs & Modules').",
+        "Hub filter category label (e.g. 'Core Engine', 'SDKs & Modules', 'Self-Hosted Infrastructure').",
     },
     description: {
       type: "string",
@@ -665,14 +710,14 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       pattern: "^#(?:[\\da-fA-F]{3}|[\\da-fA-F]{4}|[\\da-fA-F]{6}|[\\da-fA-F]{8})$",
       description:
-        "3, 4, 6, or 8 digit hexadecimal CSS accent color (e.g. '#7C3AED' or '#2563EB').",
+        "3, 4, 6, or 8 digit hexadecimal CSS accent color (e.g. '#2563EB' or '#0EA5E9').",
     },
     docsPath: {
       type: "string",
       minLength: 1,
       default: "docs",
       description:
-        "Relative POSIX folder path inside the repository containing index.md or README.md (e.g. 'docs', 'docs/users', 'docs/dev'). No leading '/', '\\', '..', or '.'.",
+        "Relative POSIX folder path inside the repository containing index.md or README.md (e.g. 'docs', 'docs/dev'). No leading '/', '\\', '..', or '.'.",
     },
     logoPath: {
       type: "string",
@@ -691,7 +736,7 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       minLength: 1,
       description:
-        "Topbar external action button label (e.g. 'View repository', 'Get License'). Ignored unless ctaUrl is also set.",
+        "Topbar external action button label (e.g. 'View repository', 'GitHub'). Ignored unless ctaUrl is also set.",
     },
     ctaUrl: {
       type: "string",
@@ -707,14 +752,14 @@ export function buildVibtoolsJsonSchema(
     $id: schemaId,
     title: "VibToolsDocsConfig",
     description:
-      "Canonical repository configuration schema (.vibtools/docs.config.json or .vibtools/config.docs.json) for Vib Docs Engine single-portal and dual-portal (docs.vib.tools & developer.vibtools.io) synchronization.",
+      "Canonical repository configuration schema (.vibtools/docs.config.json or .vibtools/config.docs.json) for Vib Docs Engine dual-portal synchronization (docs.vib.tools and developer.vibtools.io).",
     type: "object",
     additionalProperties: false,
     properties: {
       $schema: {
         type: "string",
         description:
-          "Optional URI pointing to this JSON Schema (e.g. 'https://docs.vib.tools/schemas/vibtools-docs.schema.json').",
+          "Optional URI pointing to this JSON Schema (e.g. 'https://docs.vib.tools/schemas/vibtools-docs.schema.json' or 'https://developer.vibtools.io/schemas/vibtools-docs.schema.json').",
       },
       schemaVersion: {
         const: 1,
@@ -726,7 +771,7 @@ export function buildVibtoolsJsonSchema(
         enum: ["users", "developer", "both"],
         default: "both",
         description:
-          "Target portal audience: 'users' (docs.vib.tools), 'developer' (developer.vibtools.io), or 'both' (serves both portals).",
+          "Target portal audience: 'users' (docs.vib.tools only), 'developer' (developer.vibtools.io only), or 'both' (collected by both portals).",
       },
       ...targetProperties,
       targets: {
@@ -734,7 +779,7 @@ export function buildVibtoolsJsonSchema(
         minProperties: 1,
         additionalProperties: false,
         description:
-          "Optional per-portal overrides allowing a single repository to serve different docsPath, slug, title, category, description, accentColor, logoPath, ctaUrl, or branch to docs.vib.tools ('users') and developer.vibtools.io ('developer').",
+          "Optional per-portal overrides allowing a single repository to serve different documentation folders, titles, slugs, or CTAs to docs.vib.tools ('users') and developer.vibtools.io ('developer').",
         properties: {
           users: { $ref: "#/$defs/target" },
           developer: { $ref: "#/$defs/target" },

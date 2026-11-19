@@ -1,14 +1,3 @@
 [
-  "https://github.com/vibdocs/CalGrid.git",
-  {
-    "repoUrl": "https://github.com/YOUR_ORG/invio.git",
-    "docsType": "users",
-    "category": "Desktop Apps",
-    "accentColor": "#7C3AED",
-    "ctaLabel": "Get License",
-    "ctaUrl": "https://vib.tools/invio",
-    "title": "Invio",
-    "description": "Desktop guides and setup instructions for Invio."
-  },
-  "https://github.com/YOUR_ORG/inboxchecker.git"
+  "https://github.com/vibtoolshq/vib-docs-engine.git"
 ]

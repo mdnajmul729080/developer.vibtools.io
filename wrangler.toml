@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "vib-docs-engine"
+name = "developer-vibtools-io"
 pages_build_output_dir = "dist"
 compatibility_date = "2025-01-01"
 

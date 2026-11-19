@@ -41,7 +41,7 @@ The Hub is the compact entry point. It uses configured brand/title, global searc
 
 ## Three-column product reader (`/[product]/[...slug]`)
 
-- **Sticky header:** `← Hub`, product logo/name, manifest-driven Product Switcher dropdown, `Ctrl+K` search trigger, dynamic project CTA (`Get License`, `GitHub`, etc.), and dark/light theme toggle.
+- **Sticky header:** `← Hub`, product logo/name, manifest-driven Product Switcher dropdown, `Ctrl+K` search trigger, dynamic project CTA (`View repository`, `GitHub`, etc.), and dark/light theme toggle.
 - **Collapsible left sidebar:** recursive groups, active route highlighted with product `accentColor`, current page remains discoverable and keyboard operable.
 - **Center reading column:** `max-w-[740px]`; breadcrumbs; title and metadata; prose; code blocks with Expressive Code, copy button, filename header and diff highlighting; `Note`, `Tip`, `Warning`, `Danger` callouts; “Edit this page on Git”; Previous/Next navigation.
 - **Sticky right TOC:** “On This Page” heading outline with scroll-spy active heading.

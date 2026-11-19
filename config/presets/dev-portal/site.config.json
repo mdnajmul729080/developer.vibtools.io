@@ -8,8 +8,8 @@
   "portalType": "developer",
   "navLinks": [
     {
-      "label": "User Docs",
-      "href": "https://docs.vib.tools"
+      "label": "Vib Tools",
+      "href": "https://vib.tools"
     },
     {
       "label": "GitHub",

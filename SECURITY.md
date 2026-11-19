@@ -1,6 +1,6 @@
 # Security Policy — Vib Docs Engine (`vib-docs-engine`)
 
-**Vib Tools** takes the security of **Vib Docs Engine**, our public documentation portals ([docs.vib.tools](https://docs.vib.tools/) and [developer.vibtools.io](https://developer.vibtools.io/)), and our upstream repositories seriously.
+**Vib Tools** takes the security of **Vib Docs Engine**, our developer documentation portal ([developer.vibtools.io](https://developer.vibtools.io/)), and our upstream repositories seriously.
 
 ---
 

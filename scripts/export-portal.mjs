@@ -2,10 +2,10 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 const projectRoot = path.resolve(process.cwd());
-const usage = `Usage: npm run export-portal -- --portal <user|dev> --out <targetDirectory>
+const usage = `Usage: npm run export-portal -- --portal <dev|user> --out <targetDirectory>
 
 Example:
-  npm run export-portal -- --portal user --out ../docs-vib-tools`;
+  npm run export-portal -- --portal dev --out ../developer-vibtools-io`;
 const excludedNames = new Set([
   "node_modules",
   "dist",
@@ -20,7 +20,7 @@ const excludedNames = new Set([
 ]);
 const generatedRoots = ["src/content/docs", "src/generated", "public/logos"];
 const portalWranglerNames = {
-  user: "docs-vib-tools",
+  user: "developer-vibtools-io",
   dev: "developer-vibtools-io",
 };
 

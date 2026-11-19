@@ -1,5 +1,5 @@
 {
-  "$schema": "https://docs.vib.tools/schemas/vibtools-docs.schema.json",
+  "$schema": "https://developer.vibtools.io/schemas/vibtools-docs.schema.json",
   "schemaVersion": 1,
   "docsType": "developer",
   "slug": "vib-docs-engine",
@@ -7,10 +7,10 @@
   "category": "Core Engine",
   "description": "A static multi-product documentation engine.",
   "version": "1.0.0",
-  "accentColor": "#7C3AED",
+  "accentColor": "#2563EB",
   "docsPath": "docs",
   "logoPath": ".vibtools/logo.png",
   "branch": "main",
   "ctaLabel": "View repository",
-  "ctaUrl": "https://github.com/JILLU-Games/vib-docs-engine"
+  "ctaUrl": "https://github.com/vibtoolshq/vib-docs-engine"
 }

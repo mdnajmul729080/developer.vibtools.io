@@ -10,23 +10,24 @@ import {
 import type { SiteConfig } from "./manifest";
 
 const sampleSite: SiteConfig = {
-  portalTitle: "Vib Tools Documentation",
-  portalSubtitle: "Guides and references for building with Vib Tools.",
-  domain: "docs.vib.tools",
+  portalTitle: "Vib Tools Developer Hub",
+  portalSubtitle: "SDKs, open-source engines, self-hosted infrastructure, and API references.",
+  domain: "developer.vibtools.io",
   brandName: "Vib Tools",
-  brandLogo: "/logos/vib-tools.png",
-  defaultAccent: "#7C3AED",
+  brandLogo: "/vib-tools-logo.png",
+  defaultAccent: "#2563EB",
+  portalType: "developer",
   navLinks: [
     { label: "Vib Tools", href: "https://vib.tools" },
-    { label: "GitHub", href: "https://github.com/vibtools" },
+    { label: "GitHub", href: "https://github.com/vibtoolshq" },
   ],
 };
 
 test("resolveOrigin and resolveAbsoluteUrl add https scheme fallback safely", () => {
-  assert.equal(resolveOrigin("docs.vib.tools/"), "https://docs.vib.tools");
+  assert.equal(resolveOrigin("developer.vibtools.io/"), "https://developer.vibtools.io");
   assert.equal(
     resolveAbsoluteUrl("/vib-docs-engine/deployment/", sampleSite.domain),
-    "https://docs.vib.tools/vib-docs-engine/deployment/",
+    "https://developer.vibtools.io/vib-docs-engine/deployment/",
   );
 });
 
@@ -46,13 +47,13 @@ test("buildHubJsonLd outputs Organization and WebSite SearchAction nodes", () =>
   assert.equal(schema["@context"], "https://schema.org");
   assert.equal(graph.length, 2);
   assert.equal(graph[0]["@type"], "Organization");
-  assert.equal(graph[0].logo, "https://docs.vib.tools/logos/vib-tools.png");
+  assert.equal(graph[0].logo, "https://developer.vibtools.io/vib-tools-logo.png");
   assert.equal(graph[1]["@type"], "WebSite");
   const action = graph[1].potentialAction as Record<string, unknown>;
   assert.equal(action["@type"], "SearchAction");
   assert.deepEqual(action.target, {
     "@type": "EntryPoint",
-    urlTemplate: "https://docs.vib.tools/?q={search_term_string}",
+    urlTemplate: "https://developer.vibtools.io/?q={search_term_string}",
   });
 });
 
@@ -63,7 +64,7 @@ test("buildDocJsonLd outputs TechArticle and ordered BreadcrumbList nodes", () =
       slug: "vib-docs-engine",
       title: "Vib Docs Engine",
       description: "Static engine docs.",
-      version: "0.1.0",
+      version: "1.0.0",
     },
     pageTitle: "Deployment",
     description: "Deploy to Cloudflare Pages.",
@@ -81,7 +82,7 @@ test("buildDocJsonLd outputs TechArticle and ordered BreadcrumbList nodes", () =
   assert.deepEqual(graph[0].about, {
     "@type": "SoftwareApplication",
     name: "Vib Docs Engine",
-    softwareVersion: "0.1.0",
+    softwareVersion: "1.0.0",
   });
 
   const breadcrumbs = graph[1];
@@ -89,5 +90,5 @@ test("buildDocJsonLd outputs TechArticle and ordered BreadcrumbList nodes", () =
   const items = breadcrumbs.itemListElement as Array<Record<string, unknown>>;
   assert.equal(items.length, 3);
   assert.equal(items[0].position, 1);
-  assert.equal(items[2].item, "https://docs.vib.tools/vib-docs-engine/deployment/");
+  assert.equal(items[2].item, "https://developer.vibtools.io/vib-docs-engine/deployment/");
 });

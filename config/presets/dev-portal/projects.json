@@ -1,13 +1,3 @@
 [
-  "https://github.com/JILLU-Games/vib-docs-engine.git",
-  {
-    "repoUrl": "https://github.com/YOUR_ORG/vib-self-hosted.git",
-    "docsType": "developer",
-    "category": "Self-Hosted Infrastructure",
-    "accentColor": "#14B8A6",
-    "ctaLabel": "View repository",
-    "ctaUrl": "https://github.com/YOUR_ORG/vib-self-hosted",
-    "title": "Vib Self-Hosted",
-    "description": "Deployment, operations, and API reference for self-hosted Vib services."
-  }
+  "https://github.com/vibtoolshq/vib-docs-engine.git"
 ]

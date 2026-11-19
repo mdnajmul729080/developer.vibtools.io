@@ -35,5 +35,6 @@
 | `029-ai-readable-vibtools-docs-and-schema.md`  | Plan & verification log for AI-readable `/vib-docs-engine/` guides, hosted JSON Schema, and LLMs index | Plan      |
 | `030-onboard-calgrid-vibdocs.md`               | Audit & onboarding log for `https://github.com/vibdocs/CalGrid` on `docs.vib.tools`          | Plan      |
 | `031-github-ready-markdown-and-seo-docs.md`    | Plan & verification log for GitHub-ready SEO `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `SUPPORT.md` | Plan      |
+| `032-developer-only-portal-conversion.md`      | Plan & verification log for converting the repository and `.vibtools/` sync rules to a developer-only portal (`https://developer.vibtools.io`) | Plan      |
 
 

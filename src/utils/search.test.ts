@@ -12,7 +12,7 @@ import type { ManifestProject } from "./manifest";
 
 test("normalizeRoutePath ensures canonical trailing slash", () => {
   assert.equal(normalizeRoutePath("/vib-docs-engine/deployment"), "/vib-docs-engine/deployment/");
-  assert.equal(normalizeRoutePath("https://docs.vib.tools/vib-docs-engine"), "/vib-docs-engine/");
+  assert.equal(normalizeRoutePath("https://developer.vibtools.io/vib-docs-engine"), "/vib-docs-engine/");
   assert.equal(normalizeRoutePath("/"), "/");
 });
 

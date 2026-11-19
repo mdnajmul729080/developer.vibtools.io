@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Vib Docs Engine Documentation & .vibtools/ Schema
-    url: https://docs.vib.tools/vib-docs-engine/
+    url: https://developer.vibtools.io/vib-docs-engine/
     about: Read the official operator guide, .vibtools/docs.config.json specification, and deployment runbooks.
   - name: Security vulnerability reports (Private)
     url: mailto:support@vibtools.io

@@ -1,11 +1,11 @@
 {
-  "portalTitle": "Vib Tools Documentation",
-  "portalSubtitle": "Guides and references for building with Vib Tools.",
-  "domain": "https://docs.vib.tools",
+  "portalTitle": "Vib Tools Developer Hub",
+  "portalSubtitle": "SDKs, open-source engines, self-hosted infrastructure, and API references.",
+  "domain": "https://developer.vibtools.io",
   "brandName": "Vib Tools",
   "brandLogo": "/vib-tools-logo.png",
-  "defaultAccent": "#7C3AED",
-  "portalType": "all",
+  "defaultAccent": "#2563EB",
+  "portalType": "developer",
   "navLinks": [
     {
       "label": "Vib Tools",

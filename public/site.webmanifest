@@ -1,5 +1,5 @@
 {
-  "name": "Vib Tools Documentation",
+  "name": "Vib Tools Developer Hub",
   "short_name": "Vib Tools",
   "icons": [
     {
@@ -21,7 +21,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#7C3AED",
+  "theme_color": "#2563EB",
   "background_color": "#09090b",
   "display": "standalone"
 }

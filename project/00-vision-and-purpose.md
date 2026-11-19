@@ -6,16 +6,14 @@ Build `vib-docs-engine`, one reusable, production-grade static documentation eng
 
 The engine prioritizes static delivery, search without third-party runtime services, compact developer-first reading, strong SEO, and a zero-code-update content workflow. A product team should be able to publish a documentation change by updating its docs and triggering a deployment build, not by changing website source.
 
-## Dual-portal deployment: one engine, two portals
+## Developer portal deployment (`https://developer.vibtools.io`)
 
-Complete one master codebase, then clone/deploy it into two independent repositories and domains. The deployments use the same application source and differ solely through `config/site.config.json` and `config/projects.json`:
+This repository (`https://github.com/vibtoolshq/vib-docs-engine`) is configured as the official developer documentation portal at **`https://developer.vibtools.io`** (`portalType: "developer"`):
 
-1. **`docs.vib.tools`:** end-user documentation for desktop apps, web tools, and paid software guides.
-2. **`developer.vibtools.io`:** developer and open-source documentation for SDKs, engines, modules, and self-hosted tools.
+- **`https://developer.vibtools.io`:** developer and open-source documentation for SDKs, engines, modules, CLI tools, and self-hosted packages.
+- **Strict developer-only filtering (`portalType: "developer"`):** during `scripts/sync-docs.mjs`, the portal accepts **only** product repositories whose `.vibtools/docs.config.json` (or `config.docs.json`) explicitly declares `"docsType": "dev"` or `"docsType": "developer"` (or defines a `targets.developer` block without `docsType: "users"`). End-user projects (`"docsType": "users"` / `"user"`) and untyped projects are automatically skipped.
 
-Each deployment owns its own product registry, portal branding, generated files, build secrets, domain, and webhook configuration. Never cross-copy generated content or credentials between portals.
-
-**Strict separation rule:** never hardcode user-vs-developer categories, products, or portal branches in application source. Do not mix the two catalogs inside source code. Portal-specific distinctions belong in configuration only.
+**Strict separation rule:** never hardcode product catalogs in application source. Portal-specific distinctions and audience filtering are enforced through `config/site.config.json`, `config/projects.json`, and `.vibtools/docs.config.json`.
 
 ## Five non-negotiable rules
 

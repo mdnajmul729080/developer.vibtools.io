@@ -20,7 +20,7 @@ export interface DocJsonLdInput {
 }
 
 export function resolveOrigin(domain: string): string {
-  const trimmed = (domain || "https://docs.vib.tools").trim();
+  const trimmed = (domain || "https://developer.vibtools.io").trim();
   const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
   try {
     return new URL(withScheme).origin;

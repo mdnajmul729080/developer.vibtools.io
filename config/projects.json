@@ -2,15 +2,15 @@
   {
     "slug": "vib-docs-engine",
     "category": "Core Engine",
-    "accentColor": "#7C3AED",
-    "repoUrl": "https://github.com/JILLU-Games/vib-docs-engine.git",
+    "accentColor": "#2563EB",
+    "repoUrl": "https://github.com/vibtoolshq/vib-docs-engine.git",
     "branch": "main",
     "docsPath": "docs",
+    "docsType": "developer",
     "ctaLabel": "View repository",
-    "ctaUrl": "https://github.com/JILLU-Games/vib-docs-engine",
+    "ctaUrl": "https://github.com/vibtoolshq/vib-docs-engine",
     "title": "Vib Docs Engine",
     "description": "A static multi-product documentation engine.",
     "version": "1.0.0"
-  },
-  "https://github.com/vibdocs/CalGrid.git"
+  }
 ]

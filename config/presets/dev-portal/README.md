@@ -1,3 +1,3 @@
 # Developer Portal Preset
 
-Paired starter configuration for `https://developer.vibtools.io`. `site.config.json` sets the developer hub title and cross-links to User Docs; `projects.json` demonstrates SDKs & Engines and Self-Hosted Infrastructure categories. Replace `YOUR_ORG` with real repositories before deploying.
+Paired configuration for `https://developer.vibtools.io`. `site.config.json` configures the developer hub title, `portalType: "developer"`, and Vib Tools/GitHub navigation links; `projects.json` registers developer repositories from `https://github.com/vibtoolshq`.

@@ -28,14 +28,14 @@
 
 The pipeline above is implemented across the Astro routes, layouts, Pagefind search, sitemap, robots, and `llms.txt` endpoints. `scripts/sync-docs.mjs` remains the boundary between external product repositories and static site generation. A failed production sync/build must prevent deployment from replacing the last known-good site.
 
-## Single engine, two deployments
+## Developer portal deployment (`https://developer.vibtools.io`)
 
-Use one master `vib-docs-engine` codebase, cloned/deployed into two independent repositories or deployment configurations:
+This repository is configured and deployed as the developer documentation portal at `https://developer.vibtools.io` (`portalType: "developer"`):
 
-- `docs.vib.tools` is the end-user portal for desktop apps, web tools, and paid software guides.
-- `developer.vibtools.io` is the developer/open-source portal for SDKs, engines, modules, and self-hosted tools.
+- `https://developer.vibtools.io` publishes developer/open-source documentation for SDKs, engines, modules, and self-hosted tools.
+- `scripts/sync-docs.mjs` enforces `portalType: "developer"` via `resolvePortalProjectConfig()` in `src/utils/vibtoolsConfig.ts`, accepting only repositories that explicitly declare `"docsType": "dev"` or `"docsType": "developer"` (or a `targets.developer` block) in `.vibtools/docs.config.json`.
 
-Only `config/site.config.json` and `config/projects.json` should differ between these portals. Never add host checks, audience checks, category allowlists, or portal-specific product logic to source. Keep each deployment's secrets, generated content, build output, and webhooks isolated.
+Never add hardcoded product lists or category allowlists to application source. Keep deployment secrets, generated content, build output, and webhooks isolated.
 
 ## Build-time synchronization
 
