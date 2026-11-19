@@ -674,7 +674,7 @@ export function extractMarkdownMetadata(markdownSource: string): ExtractedMarkdo
 }
 
 export function buildVibtoolsJsonSchema(
-  schemaId = "https://developer.vibtools.io/schemas/vibtools-docs.schema.json",
+  schemaId = "https://docs.vib.tools/schemas/vibtools-docs.schema.json",
 ): Record<string, unknown> {
   const targetProperties = {
     slug: {
@@ -693,7 +693,7 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       minLength: 1,
       description:
-        "Hub filter category label (e.g. 'Core Engine', 'SDKs & Modules', 'Self-Hosted Infrastructure').",
+        "Hub filter category label (e.g. 'Desktop Apps', 'Core Engine', 'SDKs & Modules').",
     },
     description: {
       type: "string",
@@ -710,14 +710,14 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       pattern: "^#(?:[\\da-fA-F]{3}|[\\da-fA-F]{4}|[\\da-fA-F]{6}|[\\da-fA-F]{8})$",
       description:
-        "3, 4, 6, or 8 digit hexadecimal CSS accent color (e.g. '#2563EB' or '#0EA5E9').",
+        "3, 4, 6, or 8 digit hexadecimal CSS accent color (e.g. '#7C3AED' or '#2563EB').",
     },
     docsPath: {
       type: "string",
       minLength: 1,
       default: "docs",
       description:
-        "Relative POSIX folder path inside the repository containing index.md or README.md (e.g. 'docs', 'docs/dev'). No leading '/', '\\', '..', or '.'.",
+        "Relative POSIX folder path inside the repository containing index.md or README.md (e.g. 'docs', 'docs/users', 'docs/dev'). No leading '/', '\\', '..', or '.'.",
     },
     logoPath: {
       type: "string",
@@ -736,7 +736,7 @@ export function buildVibtoolsJsonSchema(
       type: "string",
       minLength: 1,
       description:
-        "Topbar external action button label (e.g. 'View repository', 'GitHub'). Ignored unless ctaUrl is also set.",
+        "Topbar external action button label (e.g. 'View repository', 'Get License'). Ignored unless ctaUrl is also set.",
     },
     ctaUrl: {
       type: "string",
@@ -752,14 +752,14 @@ export function buildVibtoolsJsonSchema(
     $id: schemaId,
     title: "VibToolsDocsConfig",
     description:
-      "Canonical repository configuration schema (.vibtools/docs.config.json or .vibtools/config.docs.json) for Vib Docs Engine dual-portal synchronization (docs.vib.tools and developer.vibtools.io).",
+      "Canonical repository configuration schema (.vibtools/docs.config.json or .vibtools/config.docs.json) for Vib Docs Engine single-portal and dual-portal (docs.vib.tools & developer.vibtools.io) synchronization.",
     type: "object",
     additionalProperties: false,
     properties: {
       $schema: {
         type: "string",
         description:
-          "Optional URI pointing to this JSON Schema (e.g. 'https://docs.vib.tools/schemas/vibtools-docs.schema.json' or 'https://developer.vibtools.io/schemas/vibtools-docs.schema.json').",
+          "Optional URI pointing to this JSON Schema (e.g. 'https://docs.vib.tools/schemas/vibtools-docs.schema.json').",
       },
       schemaVersion: {
         const: 1,
@@ -771,7 +771,7 @@ export function buildVibtoolsJsonSchema(
         enum: ["users", "developer", "both"],
         default: "both",
         description:
-          "Target portal audience: 'users' (docs.vib.tools only), 'developer' (developer.vibtools.io only), or 'both' (collected by both portals).",
+          "Target portal audience: 'users' (docs.vib.tools), 'developer' (developer.vibtools.io), or 'both' (serves both portals).",
       },
       ...targetProperties,
       targets: {
@@ -779,7 +779,7 @@ export function buildVibtoolsJsonSchema(
         minProperties: 1,
         additionalProperties: false,
         description:
-          "Optional per-portal overrides allowing a single repository to serve different documentation folders, titles, slugs, or CTAs to docs.vib.tools ('users') and developer.vibtools.io ('developer').",
+          "Optional per-portal overrides allowing a single repository to serve different docsPath, slug, title, category, description, accentColor, logoPath, ctaUrl, or branch to docs.vib.tools ('users') and developer.vibtools.io ('developer').",
         properties: {
           users: { $ref: "#/$defs/target" },
           developer: { $ref: "#/$defs/target" },
