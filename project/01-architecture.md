@@ -34,6 +34,7 @@ This repository is configured and deployed as the developer documentation portal
 
 - `https://developer.vibtools.io` publishes developer/open-source documentation for SDKs, engines, modules, and self-hosted tools.
 - `scripts/sync-docs.mjs` enforces `portalType: "developer"` via `resolvePortalProjectConfig()` in `src/utils/vibtoolsConfig.ts`, accepting only repositories that explicitly declare `"docsType": "dev"` or `"docsType": "developer"` (or a `targets.developer` block) in `.vibtools/docs.config.json`.
+- **Single Frozen Schema Contract (`project/05-frozen-vibtools-schema.md`):** Both `https://docs.vib.tools` (`portalType: "users"`) and `https://developer.vibtools.io` (`portalType: "developer"`) collect `docs/` from the exact same frozen `.vibtools/docs.config.json` schema (`schemaVersion: 1`, `$id: "https://docs.vib.tools/schemas/vibtools-docs.schema.json"`). This schema must remain unchanged across code updates and fixes unless the repository Owner explicitly orders a schema modification.
 
 Never add hardcoded product lists or category allowlists to application source. Keep deployment secrets, generated content, build output, and webhooks isolated.
 

@@ -22,6 +22,7 @@ This repository (`https://github.com/vibtoolshq/vib-docs-engine`) is configured 
 3. **Product documentation lives in product Git repos.** Do not store authored product docs in this website repository. Each product repo contains its own `docs/index.md` and any nested `.md`/`.mdx` pages and assets. `src/content/docs/`, `src/generated/`, and synchronized product logos are generated build inputs, not authoring locations.
 4. **Pure static output and build-time sync.** During `prebuild`, `scripts/sync-docs.mjs` retrieves only the configured docs subtree through Git sparse checkout, then Astro emits static HTML/CSS and Pagefind emits the local search index in `dist/`. No client-side Git or docs API calls are allowed at runtime.
 5. **Ultra-compact, zero-clutter UI.** Keep padding minimal, information density high, borders crisp and 1px, and decoration to zero. Documentation content, not chrome, is the focus.
+6. **Frozen `.vibtools/` configuration schema (Owner-locked).** Both `https://docs.vib.tools` (`users`) and `https://developer.vibtools.io` (`developer`) share the exact frozen `.vibtools/docs.config.json` schema (`schemaVersion: 1`) defined in `project/05-frozen-vibtools-schema.md`. AI coding agents must never change, extend, rename, or break this schema during code updates or fixes without explicit authorization from the repository Owner.
 
 ## Scope and implementation boundary
 

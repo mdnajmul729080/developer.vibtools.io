@@ -272,3 +272,25 @@ Record dates, files/areas, behavior changed, and verification result whenever co
 - Updated `scripts/sync-docs.mjs` (`main`) to purge stale Astro Content Layer `data-store.json` cache files (`node_modules/.astro/data-store.json` and `.astro/data-store.json`) after every sync so Astro always renders fresh synced docs with current Remark plugins.
 - Verified full `npm run verify` (`131` HTML pages, `16` required assets, `5` projects, `129` Pagefind pages / `6223` words, `0` broken internal links).
 
+## 2026-11-19 — Compact Developer-First Command-Bar Hub Hero
+
+- Redesigned `src/pages/index.astro` hero section into a compact (`py-5 sm:py-6`), unbiased split layout: replaced the single-project `Browse ...` CTA and `Quick Guides` widget with a command-style `[data-search-trigger]` bar showing real manifest totals (`Search {totalPages} docs across {projects.length} projects... Ctrl K`) and a 3-row `Developer Endpoints` card (`/llms.txt`, `/llms-full.txt`, `vibtools-docs.schema.json` with tabular repo/page counts).
+- Updated `project/03-ui-design-system.md` and `project/04-codebase-reference.md` to match the updated Hub Hero structure.
+- Verified with `npm test` (`17/17` pass), `npm run verify` (`131` HTML pages, `16` required assets, `5` projects, `0` broken links), `compile_applet`, `lint_applet`, and live Chromium inspection (`1440x900` dark/light modes and `390x844` mobile with zero horizontal overflow and zero console errors).
+
+## 2026-11-20 — Frozen `.vibtools/` Schema Contract & AI Governance Lock (Documents-Only Scope)
+
+- **Documents-Only Scope Lock:** Updated only Markdown documentation/governance files (`AGENTS.md`, `project/*`, `docs/*`, `notes/*`) with zero changes to runtime code, JSON configs, or scripts.
+- Created `project/05-frozen-vibtools-schema.md` as the **FINAL & FROZEN** (`schemaVersion: 1`, `$id: "https://docs.vib.tools/schemas/vibtools-docs.schema.json"`) engineering specification shared across both **`https://docs.vib.tools`** (`portalType: "users"`) and **`https://developer.vibtools.io`** (`portalType: "developer"`).
+- Updated `AGENTS.md` (`## Frozen .vibtools/ Schema Governance (Owner-Order Lock — CRITICAL)`), `project/README.md`, `project/MANIFEST.md`, `project/00-vision-and-purpose.md`, and `project/01-architecture.md` to forbid any AI coding agent from changing, adding, removing, renaming, or breaking the `.vibtools/` schema during future code fixes or updates without explicit Owner authorization.
+- Updated `docs/vibtools-config.md` and `docs/index.md` with explicit `FROZEN CONTRACT` governance notices and matched the `schemaVersion` default in Section 8 (`"default": 1`) to `src/utils/vibtoolsConfig.ts`.
+
+## 2026-11-20 — Upstream `.vibtools/` Display Metadata Precedence & Sparse Branch Re-Resolution Fix
+
+- Added pure, zero-dependency `src/utils/syncMetadata.ts` (`resolveProjectDisplayMetadata`, `nextSparseBranchTarget`) and `src/utils/syncMetadata.test.ts` (`4` unit tests) to enforce strict `.vibtools/` / registry display metadata precedence (`.vibtools/` > root `index.md` YAML frontmatter > Smart Markdown extraction > `# H1` / slug title, preserving numeric `0`) and cycle-safe bounded remote branch targeting.
+- Updated `scripts/sync-docs.mjs` (`syncProject`) to:
+  - Re-read `.vibtools/` (`readVibtoolsConfigFromRoot`) and re-run `resolvePortalProjectConfig()` after `switchGitSparseBranch()` inside a bounded `nextSparseBranchTarget()` loop, skipping cleanly if the resolved branch no longer matches `portalType: "developer"`.
+  - Run duplicate `reservedSlugs` uniqueness checks only after final branch resolution.
+  - Resolve `{ title, description, version }` via `resolveProjectDisplayMetadata()` so `.vibtools/` `version` and `targets.developer.description` updates override stale root `index.md` YAML frontmatter.
+- Left the frozen `.vibtools/` schema (`src/utils/vibtoolsConfig.ts`, `src/pages/schemas/vibtools-docs.schema.json.ts`), `package.json`, `config/site.config.json`, UI components, and SEO/AI endpoints unchanged.
+- Verified with `npm test` (`21/21` pass), `npm run lint`, `npx tsc -p functions/tsconfig.json --noEmit`, and `STRICT_SYNC=1 npm run verify` (`131` HTML files, `16` required assets, `5` projects: `docscaffold`, `socketcore`, `vps-mcp`, `kronotp`, `updatepilot`, `0` broken internal links).

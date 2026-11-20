@@ -12,7 +12,7 @@ version: "1.0.0"
 
 ## 1. AI Agent & Automated Repository Setup Quick-Start
 
-If you are an **AI coding agent** (or developer) asked to configure `.vibtools/` and `docs/` inside a product repository so it syncs with `https://docs.vib.tools` or `https://developer.vibtools.io`, read these machine-readable resources first:
+If you are an **AI coding agent** (or developer) asked to configure `.vibtools/` and `docs/` inside a product repository so it syncs with `https://docs.vib.tools` or `https://developer.vibtools.io`, read these machine-readable resources first. Both portals share the exact **final & frozen** `.vibtools/docs.config.json` schema (`schemaVersion: 1` from `docs.vib.tools`) — never invent custom fields or alter the frozen schema without explicit Owner authorization:
 
 | Resource | Path | Format & Purpose |
 | :--- | :--- | :--- |

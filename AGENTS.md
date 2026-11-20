@@ -25,3 +25,10 @@ After every implemented change, update the durable documentation in `project/` w
 - Keep portal configs separate; do not hardcode user/developer products or categories in application code.
 - Never put credentials in presets, source URLs, logs, notes intended for export, or generated manifests. Use deployment secrets.
 - Keep changes narrow and run the relevant syntax, TypeScript, build, and/or verifier checks after edits.
+
+## Frozen `.vibtools/` Schema Governance (Owner-Order Lock — CRITICAL)
+
+- **Single Immutable Schema Across Both Portals:** The `.vibtools/docs.config.json` (and `.vibtools/config.docs.json`) configuration schema established in `docs.vib.tools` — specified in `project/05-frozen-vibtools-schema.md` and `docs/vibtools-config.md` (`schemaVersion: 1`, `$id: "https://docs.vib.tools/schemas/vibtools-docs.schema.json"`) — is **FINAL AND FROZEN**. Both `https://docs.vib.tools` (`portalType: "users"`) and `https://developer.vibtools.io` (`portalType: "developer"`) collect `docs/` strictly from this exact schema.
+- **No Unauthorized Modification:** AI coding agents MUST **NEVER** add, remove, rename, deprecate, or alter any field, type, enum value, regex pattern, `additionalProperties: false` guard, `docsPath`/`targets` resolution rule, or schema output format in `src/utils/vibtoolsConfig.ts`, `src/pages/schemas/vibtools-docs.schema.json.ts`, `scripts/sync-docs.mjs`, `scripts/verify-build.mjs`, `docs/vibtools-config.md`, or `project/05-frozen-vibtools-schema.md` during any bugfix, refactor, UI polish, or feature update **unless the repository Owner issues an explicit direct instruction authorizing that schema change**.
+- **Verify Compatibility After Any Edit:** Whenever fixing code or updating the engine, verify that `src/utils/vibtoolsConfig.test.ts` and `npm run verify` continue to pass against the unchanged frozen schema without breaking existing `.vibtools/docs.config.json` repositories.
+

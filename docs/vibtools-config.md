@@ -8,6 +8,8 @@ version: "1.0.0"
 
 This document is the canonical specification for setting up `.vibtools/` and `docs/` inside any product repository so **Vib Docs Engine** can automatically sync, validate, categorize, and publish its documentation to **`https://docs.vib.tools`** (User Documentation Portal) and/or **`https://developer.vibtools.io`** (Developer Documentation Portal).
 
+> **FROZEN CONTRACT (`schemaVersion: 1` — Owner-Locked):** The `.vibtools/docs.config.json` (and `.vibtools/config.docs.json`) JSON Schema established in `https://docs.vib.tools` is **FINAL AND FROZEN**. Both `https://docs.vib.tools` (`users`) and `https://developer.vibtools.io` (`developer`) collect `docs/` strictly using this single unchanged schema. **AI coding agents must NEVER add, rename, remove, or modify any schema field, regex, enum value, or `additionalProperties: false` rule during code updates or bugfixes without an explicit direct order from the repository Owner.**
+
 > **For AI Coding Agents:** Everything required to configure a new or existing repository is specified on this page. You can also fetch the raw Markdown at `/vib-docs-engine/vibtools-config.md`, the full engine bundle at `/vib-docs-engine/llms.txt`, or the machine-readable JSON Schema at `/schemas/vibtools-docs.schema.json`.
 
 ---
@@ -344,9 +346,9 @@ npm run add-project -- --url https://github.com/vibtoolshq/LicenX.git
 
 ---
 
-## 8. Canonical JSON Schema (Draft 2020-12)
+## 8. Canonical JSON Schema (Draft 2020-12 — FINAL & FROZEN)
 
-This schema is hosted live at `/schemas/vibtools-docs.schema.json` on both `https://docs.vib.tools/schemas/vibtools-docs.schema.json` and `https://developer.vibtools.io/schemas/vibtools-docs.schema.json`:
+This frozen schema is hosted live at `/schemas/vibtools-docs.schema.json` on both `https://docs.vib.tools/schemas/vibtools-docs.schema.json` and `https://developer.vibtools.io/schemas/vibtools-docs.schema.json` and must remain unchanged without explicit Owner authorization:
 
 ```json
 {
@@ -364,6 +366,7 @@ This schema is hosted live at `/schemas/vibtools-docs.schema.json` on both `http
     },
     "schemaVersion": {
       "const": 1,
+      "default": 1,
       "description": "Schema format version marker. Must be 1 when provided."
     },
     "docsType": {

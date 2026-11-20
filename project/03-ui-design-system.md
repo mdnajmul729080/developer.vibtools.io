@@ -37,27 +37,31 @@ The topbar is sticky with a 1px lower border. Use semantic landmarks, skip navig
 
 ## View 1: Main Hub Portal (`/`)
 
-- Show brand identity, portal title/subtitle, global search trigger, configured links, and theme toggle in the compact sticky topbar.
+- Show brand identity, global search trigger, configured external links, and theme toggle in the compact sticky topbar.
+- Keep the Hub Hero compact (`py-5 sm:py-6`): concise title + 1-line subtitle + command-style `[data-search-trigger]` search bar (`Search {totalPages} docs across {projects.length} projects... Ctrl K`) on the left, paired with a compact 3-row `Developer Endpoints` hairline card (`/llms.txt`, `/llms-full.txt`, `vibtools-docs.schema.json` + tabular repo/page counts) on the right so all project cards stay visible above the fold without favoring a single project.
 - Derive categories from manifest. Show `[ All ]` and category tabs only when there are at least two unique categories. Hide filter tabs completely when there is one or fewer.
 - Use a compact responsive grid of product cards, not page-section cards. A card contains logo or geometric monogram, title, version pill, two-line description, category tag, and “Read Docs” action.
 - Filtering is instant and keyboard/touch accessible; include an intentional empty state. Keep card geometry stable and prevent text overlap.
 
 ```text
 +-----------------------------------------------------------------------------+
-| [Brand Logo] Vib Tools Docs        [Search all docs... Ctrl+K] [Links] ☀/☾  |
+| [Brand Logo] Vib Tools / Docs  [Search documentation... Ctrl K] [Links] ☀/☾ |
 +-----------------------------------------------------------------------------+
-|                                                                             |
-|  Vib Tools Documentation                                                    |
-|  User guides, setup manuals, and references for Vib Tools products.         |
-|                                                                             |
-|  [ All ]  [ Desktop Apps ]  [ Web Tools ]     (Hidden if only 1 category)   |
+|  Vib Tools Developer Hub             +------------------------------------+ |
+|  SDKs, engines, infra, API refs.     | Developer Endpoints  5 repos · 129 | |
+|                                      | /llms.txt               AI index ↗ | |
+|  [🔍 Search 129 docs...     Ctrl K]  | /llms-full.txt         Full docs ↗ | |
+|                                      | vibtools-docs.schema... .vibtools ↗| |
++--------------------------------------+------------------------------------+ |
+|  Documentation                                                   5 projects |
+|  [ All ]  [ Documentation Engines ]  [ Core Infrastructure ]  ...           |
 |                                                                             |
 |  +----------------------------------+  +----------------------------------+ |
-|  | [Logo] Invio              v1.4.2 |  | [Logo] InboxChecker       v1.1.0 | |
-|  | Multi-provider API invoice       |  | Email deliverability & seed      | |
-|  | sender & desktop client.         |  | inbox placement verifier.        | |
+|  | [Logo] DocScaffold        v1.0.0 |  | [Logo] SocketCore         v1.0.0 | |
+|  | Static multi-product docs engine |  | Developer reference for the      | |
+|  | with .vibtools/ auto-discovery.  |  | SocketCore WebSocket engine.     | |
 |  |                                  |  |                                  | |
-|  | Desktop Apps        Read Docs -> |  | Web Tools           Read Docs -> | |
+|  | Documentation Engines  Read Docs->| | Core Infrastructure  Read Docs -> | |
 |  +----------------------------------+  +----------------------------------+ |
 +-----------------------------------------------------------------------------+
 ```

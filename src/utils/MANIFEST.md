@@ -13,4 +13,6 @@
 | `llms.ts`             | Shared YAML-free Markdown export and `/llms.txt` / `/llms-full.txt` builders |
 | `vibtoolsConfig.ts`   | Zero-dependency `.vibtools/` config validator, dual-target resolver, and Markdown metadata extractor |
 | `vibtoolsConfig.test.ts` | `node:test` unit tests for `.vibtools/` schema, filtering, and Smart Markdown parsing |
+| `syncMetadata.ts`     | Zero-dependency display metadata precedence resolver and cycle-safe sparse branch switch guard |
+| `syncMetadata.test.ts` | `node:test` unit tests for `resolveProjectDisplayMetadata` and `nextSparseBranchTarget` |
 | `theme.ts`            | Accent validation/fallback and monogram helpers                         |

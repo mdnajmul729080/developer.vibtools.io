@@ -37,6 +37,9 @@
 | `031-github-ready-markdown-and-seo-docs.md`    | Plan & verification log for GitHub-ready SEO `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `SUPPORT.md` | Plan      |
 | `032-developer-only-portal-conversion.md`      | Plan & verification log for converting the repository and `.vibtools/` sync rules to a developer-only portal (`https://developer.vibtools.io`) | Plan      |
 | `033-vibtoolshq-org-audit-and-developer-onboarding.md` | Forensic audit of all `github.com/vibtoolshq` public repos and onboarding of `.vibtools/`-enabled developer projects | Plan      |
+| `034-hero-area-developer-hub-redesign.md`       | Plan & verification log for compact command-bar Developer Hub hero and Developer Endpoints index | Plan      |
+| `035-freeze-vibtools-schema-docs-only-lock.md`  | Documents-only write lock plan & log freezing the `.vibtools/` schema across `AGENTS.md`, `project/`, and `docs/` | Plan      |
+| `036-upstream-vibtools-sync-metadata-fix.md`    | Plan & verification log fixing `.vibtools/` display metadata precedence and branch-switch re-resolution | Plan      |
 
 
 
